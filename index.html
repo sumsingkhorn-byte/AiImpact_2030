@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ผลกระทบของ AI ต่อการจ้างงานในปี 2030 (AI Impact on Jobs 2030)</title>
+
+    <!-- Google Fonts: Inter & Sarabun -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sarabun:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="viewport-stage">
+      <!-- STARFIELD CANVAS -->
+      <canvas id="starsCanvas"></canvas>
+
+      <!-- PLANET GLOW VIDEO OVERLAY -->
+      <div class="planet-video-container" id="planetVideoContainer">
+        <video
+          class="planet-video"
+          id="planetVideo"
+          autoplay
+          muted
+          loop
+          playsinline
+        >
+          <source
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/e859f229-8ebd-43fb-a5a0-58006ba75327.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
+
+      <!-- FALLBACK CANVAS PLANET RIM -->
+      <canvas id="planetCanvasFallback"></canvas>
+
+      <div class="hero-layout">
+        <!-- TOP NAVBAR -->
+        <nav class="navbar">
+          <div class="nav-brand">
+            <div class="nav-logo-bolt">
+              <svg viewBox="0 0 24 24">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            <span>AI IMPACT 2030</span>
+          </div>
+
+          <ul class="nav-menu">
+            <li>
+              <button
+                class="nav-pill active"
+                onclick="switchDashboardTab('overview')"
+              >
+                ภาพรวมระบบ
+              </button>
+            </li>
+            <li>
+              <button class="nav-pill" onclick="switchDashboardTab('table')">
+                ตารางข้อมูลอาชีพ
+              </button>
+            </li>
+            <li>
+              <button class="nav-pill" onclick="switchDashboardTab('charts')">
+                การกระจายความเสี่ยง
+              </button>
+            </li>
+            <li>
+              <button class="nav-pill" onclick="switchDashboardTab('insights')">
+                ข้อเสนอแนะเชิงกลยุทธ์
+              </button>
+            </li>
+          </ul>
+
+          <!-- ปุ่มบน Navbar: กดแล้วสลับไปยังแท็บตารางข้อมูลภายในเว็บ -->
+          <button class="nav-cta" onclick="switchDashboardTab('table')">
+            เริ่มสำรวจข้อมูล
+          </button>
+        </nav>
+
+        <!-- HERO HEADLINE SECTION -->
+        <div class="hero-text-block">
+          <h1 class="hero-headline">
+            <span class="gradient-text"
+              >ผลกระทบของ AI ต่อการจ้างงานในปี 2030</span
+            ><br />
+            (AI Impact on Jobs 2030)
+          </h1>
+          <p class="hero-lede">
+            รายงานวิเคราะห์ข้อมูลเชิงลึก 3,000 รายการ สำรวจดัชนีการเข้าถึง AI
+            และความน่าจะเป็นในการถูกทดแทนด้วยระบบอัตโนมัติของ 20
+            กลุ่มอาชีพหลักอย่างแม่นยำ
+          </p>
+          <div class="hero-action-buttons">
+            <!-- ปุ่มใหญ่กลาง Hero: กดแล้วสลับไปยังแท็บตารางข้อมูลภายในเว็บ -->
+            <button class="btn-violet" onclick="switchDashboardTab('table')">
+              เริ่มสำรวจข้อมูล
+            </button>
+            <button class="btn-dark" onclick="switchDashboardTab('insights')">
+              อ่านบทวิเคราะห์
+            </button>
+          </div>
+        </div>
+
+        <!-- GLASS DASHBOARD PANEL -->
+        <div class="dashboard-wrapper">
+          <div class="dashboard-top-glow"></div>
+
+          <div class="dashboard-glass-panel">
+            <!-- DASHBOARD SIDEBAR -->
+            <aside class="dash-sidebar">
+              <div>
+                <div class="sidebar-brand-head">
+                  <span class="sidebar-title">เมนูวิเคราะห์ข้อมูล</span>
+                </div>
+
+                <ul class="sidebar-menu-list">
+                  <li>
+                    <button
+                      class="sidebar-item active"
+                      id="side-overview"
+                      onclick="switchDashboardTab('overview')"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"
+                        />
+                      </svg>
+                      <span>ภาพรวมระบบ</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="sidebar-item"
+                      id="side-table"
+                      onclick="switchDashboardTab('table')"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M4 11h5V5H4v6zm0 7h5v-5H4v5zm6 0h10v-5H10v5zm6-13v6h5V5h-5zm-6 6h5V5h-5v6z"
+                        />
+                      </svg>
+                      <span>ค้นหาและจัดอันดับอาชีพ</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="sidebar-item"
+                      id="side-charts"
+                      onclick="switchDashboardTab('charts')"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2v-10h2v10zm4 0h-2v-4h2v4z"
+                        />
+                      </svg>
+                      <span>การกระจายความเสี่ยง</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="sidebar-item"
+                      id="side-insights"
+                      onclick="switchDashboardTab('insights')"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                        />
+                      </svg>
+                      <span>ข้อเสนอแนะเชิงกลยุทธ์</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="sidebar-promo-card">
+                <div class="promo-title">รายงานฉบับเต็ม 2030</div>
+                <div class="promo-sub">
+                  อัปเดตสถิติจากการจำลองแบบ 3,000 ตัวอย่างล่าสุด
+                </div>
+                <button
+                  class="promo-btn"
+                  onclick="switchDashboardTab('insights')"
+                >
+                  ดูบทวิเคราะห์
+                </button>
+              </div>
+            </aside>
+
+            <!-- DASHBOARD MAIN PANEL -->
+            <main class="dash-main">
+              <div class="dash-topbar">
+                <div
+                  style="font-size: 14px; font-weight: 600; color: #fff"
+                  id="tabHeadingTitle"
+                >
+                  แดชบอร์ดสรุปภาพรวม (Executive Summary)
+                </div>
+                <div class="dash-user-badge">
+                  <div class="user-avatar-dot"></div>
+                  <span>ฐานข้อมูลแรงงาน 3,000 รายการ</span>
+                </div>
+              </div>
+
+              <!-- TAB 1: OVERVIEW -->
+              <div id="view-overview" class="tab-view active">
+                <div class="stats-row">
+                  <div class="stat-card">
+                    <div class="stat-lbl">โอกาสถูกทดแทนเฉลี่ย</div>
+                    <div class="stat-val">50.15%</div>
+                    <div class="stat-sub">Automation Probability</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-lbl">เงินเดือนเฉลี่ยต่อปี</div>
+                    <div class="stat-val">$89,372</div>
+                    <div class="stat-sub">USD / Year</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-lbl">ดัชนีสัมผัส AI เฉลี่ย</div>
+                    <div class="stat-val">0.50</div>
+                    <div class="stat-sub">AI Exposure Index</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-lbl">ประสบการณ์เฉลี่ย</div>
+                    <div class="stat-val">14.68 ปี</div>
+                    <div class="stat-sub">Years Experience</div>
+                  </div>
+                </div>
+
+                <!-- RISK DISTRIBUTION SUMMARY CARDS -->
+                <div class="grid-3col">
+                  <div class="info-card">
+                    <div
+                      style="display: flex; flex-direction: column; gap: 8px"
+                    >
+                      <span class="badge badge-high"
+                        >ความเสี่ยงสูง (High Risk)</span
+                      >
+                      <span
+                        style="font-size: 20px; font-weight: 700; color: #fff"
+                      >
+                        740 รายการ (24.67%)
+                      </span>
+                    </div>
+                    <p
+                      style="
+                        font-size: 13px;
+                        color: var(--text-muted);
+                        line-height: 1.5;
+                      "
+                    >
+                      โอกาสถูกทดแทนเฉลี่ย <strong>82.95%</strong> |
+                      เงินเดือนเฉลี่ย <strong>$87,359</strong><br />
+                      กลุ่มสายงานปฏิบัติการและงานบริการ routine เช่น
+                      พนักงานขายหน้าร้าน, รปภ., คนงานก่อสร้าง, สนับสนุนลูกค้า,
+                      คนขับรถบรรทุก
+                    </p>
+                  </div>
+
+                  <div class="info-card">
+                    <div
+                      style="display: flex; flex-direction: column; gap: 8px"
+                    >
+                      <span class="badge badge-medium"
+                        >ความเสี่ยงปานกลาง (Medium Risk)</span
+                      >
+                      <span
+                        style="font-size: 20px; font-weight: 700; color: #fff"
+                      >
+                        1,521 รายการ (50.70%)
+                      </span>
+                    </div>
+                    <p
+                      style="
+                        font-size: 13px;
+                        color: var(--text-muted);
+                        line-height: 1.5;
+                      "
+                    >
+                      โอกาสถูกทดแทนเฉลี่ย <strong>49.98%</strong> |
+                      เงินเดือนเฉลี่ย <strong>$90,451</strong><br />
+                      กลุ่มวิชาชีพเฉพาะทางและเทคนิค เช่น วิศวกรซอฟต์แวร์,
+                      นักวิเคราะห์การเงิน, ทนายความ, เชฟ, นักออกแบบ
+                    </p>
+                  </div>
+
+                  <div class="info-card">
+                    <div
+                      style="display: flex; flex-direction: column; gap: 8px"
+                    >
+                      <span class="badge badge-low"
+                        >ความเสี่ยงต่ำ (Low Risk)</span
+                      >
+                      <span
+                        style="font-size: 20px; font-weight: 700; color: #fff"
+                      >
+                        739 รายการ (24.63%)
+                      </span>
+                    </div>
+                    <p
+                      style="
+                        font-size: 13px;
+                        color: var(--text-muted);
+                        line-height: 1.5;
+                      "
+                    >
+                      โอกาสถูกทดแทนเฉลี่ย <strong>17.66%</strong> |
+                      เงินเดือนเฉลี่ย <strong>$89,167</strong><br />
+                      กลุ่มการแพทย์ การศึกษา และวิจัยเชิงลึก เช่น แพทย์, พยาบาล,
+                      ครูผู้สอน, นักวิทยาศาสตร์การวิจัย, วิศวกร AI
+                    </p>
+                  </div>
+                </div>
+
+                <!-- EDUCATION BREAKDOWN -->
+                <div class="chart-panel-box">
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 700;
+                      color: #fff;
+                      margin-bottom: 12px;
+                    "
+                  >
+                    การกระจายตัวตามระดับการศึกษา (Education Level Breakdown)
+                  </div>
+                  <div class="edu-grid">
+                    <div class="edu-card">
+                      <div style="font-size: 12px; color: var(--text-muted)">
+                        High School
+                      </div>
+                      <div class="edu-count">784 รายการ</div>
+                    </div>
+                    <div class="edu-card">
+                      <div style="font-size: 12px; color: var(--text-muted)">
+                        Bachelor's Degree
+                      </div>
+                      <div class="edu-count">765 รายการ</div>
+                    </div>
+                    <div class="edu-card">
+                      <div style="font-size: 12px; color: var(--text-muted)">
+                        Master's Degree
+                      </div>
+                      <div class="edu-count">735 รายการ</div>
+                    </div>
+                    <div class="edu-card">
+                      <div style="font-size: 12px; color: var(--text-muted)">
+                        PhD
+                      </div>
+                      <div class="edu-count">716 รายการ</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB 2: JOBS TABLE -->
+              <div id="view-table" class="tab-view">
+                <div class="ctrl-bar">
+                  <input
+                    type="text"
+                    id="searchInput"
+                    class="input-field"
+                    placeholder="ค้นหาชื่ออาชีพ (ไทย/Eng)..."
+                    style="width: 260px"
+                    oninput="renderTable()"
+                  />
+                  <div style="display: flex; gap: 10px">
+                    <select
+                      id="riskFilter"
+                      class="select-field"
+                      onchange="renderTable()"
+                    >
+                      <option value="ALL">ความเสี่ยงทั้งหมด</option>
+                      <option value="High">ความเสี่ยงสูง (High)</option>
+                      <option value="Medium">ความเสี่ยงปานกลาง (Medium)</option>
+                      <option value="Low">ความเสี่ยงต่ำ (Low)</option>
+                    </select>
+                    <select
+                      id="sortOrder"
+                      class="select-field"
+                      onchange="renderTable()"
+                    >
+                      <option value="prob_desc">
+                        โอกาสถูกแทนที่: สูง ไป ต่ำ
+                      </option>
+                      <option value="prob_asc">
+                        โอกาสถูกแทนที่: ต่ำ ไป สูง
+                      </option>
+                      <option value="salary_desc">
+                        เงินเดือนเฉลี่ย: สูง ไป ต่ำ
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ชื่ออาชีพ</th>
+                        <th>โอกาสถูกทดแทน (2030)</th>
+                        <th>เงินเดือนเฉลี่ย (USD)</th>
+                        <th>ดัชนีสัมผัส AI</th>
+                        <th>อัตราเติบโตเทคโนโลยี</th>
+                        <th>ระดับความเสี่ยง</th>
+                      </tr>
+                    </thead>
+                    <tbody id="jobTableBody">
+                      <!-- Javascript populates table rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- TAB 3: CHARTS -->
+              <div id="view-charts" class="tab-view">
+                <div class="chart-panel-box">
+                  <div
+                    style="
+                      font-size: 14px;
+                      font-weight: 700;
+                      color: #fff;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    เปรียบเทียบโอกาสถูกทดแทนด้วยระบบอัตโนมัติ (Automation
+                    Probability 2030)
+                  </div>
+                  <div id="barChartContainer">
+                    <!-- Generated by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB 4: INSIGHTS -->
+              <div id="view-insights" class="tab-view">
+                <div class="insight-card">
+                  <h4>1. สรุปกลุ่มงานที่เสี่ยงสูงที่สุด (High Risk > 80%)</h4>
+                  <p>
+                    อาชีพในกลุ่มบริการ งานหน้าร้าน และงานปฏิบัติตามรูปแบบซ้ำๆ
+                    ได้แก่ พนักงานขายหน้าร้าน (83.47%), พนักงานรักษาความปลอดภัย
+                    (83.31%), คนงานก่อสร้าง (82.60%), พนักงานสนับสนุนลูกค้า
+                    (82.53%) และพนักงานขับรถบรรทุก (81.86%)
+                    ถูกประเมินว่ามีความเสี่ยงสูงที่สุด
+                    เนื่องจากสามารถแทนที่ด้วยซอฟต์แวร์อัตโนมัติ
+                    หุ่นยนต์อุตสาหกรรม และระบบ AI สนับสนุนได้อย่างสมบูรณ์
+                  </p>
+                </div>
+
+                <div class="insight-card">
+                  <h4>2. สรุปกลุ่มงานที่เสี่ยงต่ำที่สุด (Low Risk < 20%)</h4>
+                  <p>
+                    กลุ่มการแพทย์ การศึกษา และงานวิจัยเชิงลึก เช่น วิศวกร AI
+                    (17.22%), นักวิทยาศาสตร์การวิจัย (17.42%), พยาบาล (17.56%),
+                    ครู/ผู้สอน (17.58%) และแพทย์ (17.67%) มีความเสี่ยงต่ำที่สุด
+                    เนื่องจากเป็นกลุ่มงานที่ต้องอาศัยทักษะการตัดสินใจเชิงจริยธรรม
+                    ความเห็นอกเห็นใจมนุษย์ (Empathy)
+                    และการสร้างสรรค์นวัตกรรมใหม่ที่ AI ไม่สามารถเลียนแบบได้
+                  </p>
+                </div>
+
+                <div class="insight-card">
+                  <h4>
+                    3. ข้อสังเกตเชิงนโยบายและทักษะแห่งอนาคต (AI-Augmentation)
+                  </h4>
+                  <p>
+                    ข้อมูลแสดงให้เห็นว่าระดับการศึกษาและอัตราเงินเดือนไม่ได้แปรผันตรงกับความปลอดภัยจาก
+                    AI เสมอไป โดยอาชีพที่มีค่าตอบแทนสูง เช่น ทนายความ
+                    หรือนักวิเคราะห์การเงิน ยังคงมีดัชนีสัมผัส AI
+                    อยู่ในระดับปานกลาง (48-52%)
+                    ดังนั้นกลยุทธ์สำคัญสำหรับองค์กรและบุคลากรคือการมุ่งเน้นการพัฒนาทักษะ
+                    **AI-Augmentation** หรือการใช้ AI เสริมประสิทธิภาพในการทำงาน
+                  </p>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- External Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
